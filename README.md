@@ -2,16 +2,22 @@
 
 Fast 2D **and 3D** Multi-Scale Deformable Attention (MSDA) for PyTorch, written in [Triton](https://github.com/triton-lang/triton).
 
-- **No compilation step.** Pure Python — installs with `pip`, no `nvcc`, no CUDA toolkit, no C++ build. The kernels JIT-compile on first use via Triton, which ships with PyTorch.
 - **3D MSDA.** The original Deformable-DETR CUDA op is 2D-only; this library provides a native 3D (volumetric) variant with full autograd.
+- **No compilation step.** Pure Python — installs with `pip`, no `nvcc`, no CUDA toolkit, no C++ build. The kernels JIT-compile on first use via Triton, which ships with PyTorch.
 - **Fast.** 2–10x faster forward and ~2x faster training step than the pure-PyTorch fallback (see [benchmarks](#benchmarks)).
 - **Drop-in.** Same tensor contract as the standard MSDA op, with forward + backward via `torch.autograd`. Supports fp32, fp16, and bf16.
 - **Validated.** Every kernel is tested against a pure-PyTorch reference implementation (also included, for CPU use or double-checking).
 
 ## Installation
 
+Install directly from GitHub:
+
 ```bash
-pip install msda-triton
+# HTTPS
+pip install git+https://github.com/mach9robotics/msda-triton.git
+
+# or SSH
+pip install git+ssh://git@github.com/mach9robotics/msda-triton.git
 ```
 
 Requires Python ≥ 3.10, PyTorch ≥ 2.0, Triton ≥ 2.1, and a CUDA GPU.
@@ -20,28 +26,28 @@ Requires Python ≥ 3.10, PyTorch ≥ 2.0, Triton ≥ 2.1, and a CUDA GPU.
 
 ```python
 import torch
-from msda_triton import msda2d
+from msda_triton import msda3d
 
 device = "cuda"
 B, H, C = 2, 8, 32          # batch, heads, channels per head
 Q, P = 100, 4               # queries, sampling points per level
 
-# Two pyramid levels: 32x32 and 16x16
-spatial_shapes = torch.tensor([[32, 32], [16, 16]], dtype=torch.int32)
-K = int((spatial_shapes[:, 0] * spatial_shapes[:, 1]).sum())  # total keys
+# Two volumetric pyramid levels: 16x32x32 and 8x16x16  (D, H, W)
+spatial_shapes = torch.tensor([[16, 32, 32], [8, 16, 16]], dtype=torch.int32)
+K = int((spatial_shapes[:, 0] * spatial_shapes[:, 1] * spatial_shapes[:, 2]).sum())  # total keys
 L = spatial_shapes.size(0)
 
 value = torch.randn(B, K, H, C, device=device, requires_grad=True)
-sampling_locations = torch.rand(B, Q, H, L, P, 2, device=device, requires_grad=True)
+sampling_locations = torch.rand(B, Q, H, L, P, 3, device=device, requires_grad=True)
 attention_weights = torch.rand(B, Q, H, L, P, device=device).softmax(dim=-1)
 
-out = msda2d(value, spatial_shapes, sampling_locations, attention_weights)
+out = msda3d(value, spatial_shapes, sampling_locations, attention_weights)
 out.sum().backward()        # gradients flow to value, locations, and weights
 
 print(out.shape)            # (B, Q, H * C)
 ```
 
-The 3D variant `msda3d` is identical except spatial shapes are `(L, 3)` as `(D, H, W)` and sampling locations have a trailing dimension of 3.
+The 2D variant `msda2d` is identical except spatial shapes are `(L, 2)` as `(H, W)` and sampling locations have a trailing dimension of 2.
 
 ## API
 

@@ -67,6 +67,9 @@ select = [
     "B",      # flake8-bugbear
     "SIM",    # flake8-simplify
     "C4",     # flake8-comprehensions
+    "RUF001", # ambiguous unicode in strings (e.g. multiplication sign vs "x")
+    "RUF002", # ambiguous unicode in docstrings
+    "RUF003", # ambiguous unicode in comments
 ]
 
 ignore = [

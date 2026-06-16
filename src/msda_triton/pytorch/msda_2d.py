@@ -242,7 +242,7 @@ class MSDA2D(nn.Module):
     ) -> torch.Tensor:
         """Forward pass for 2D Multi-Scale Deformable Attention.
 
-        Note: Unlike standard attention (Q×K^T×V), deformable attention uses
+        Note: Unlike standard attention (QxK^TxV), deformable attention uses
         queries to predict sampling locations and weights, then samples from
         values. The key parameter is unused.
 

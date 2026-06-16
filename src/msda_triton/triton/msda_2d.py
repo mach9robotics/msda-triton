@@ -66,7 +66,7 @@ def _prepare_spatial_2d(
         if value.size(1) != total_keys:
             raise ValueError(
                 f"value dim 1 ({value.size(1)}) does not match sum of spatial shapes "
-                f"({total_keys}). Ensure K = Σ(H_l × W_l) across all levels."
+                f"({total_keys}). Ensure K = Σ(H_l x W_l) across all levels."
             )
         return (
             shapes_cpu.to(device=device, dtype=torch.int32),
@@ -132,7 +132,7 @@ def _fwd_kernel_2d(
         │                                                             │
         │  1. Load sampling coords (x,y) ∈ [0,1]                      │
         │     ↓                                                       │
-        │  2. Map to pixel space: x_img = x×W - 0.5                   │
+        │  2. Map to pixel space: x_img = xxW - 0.5                   │
         │     ↓                                                       │
         │  3. Find 4 neighbors:                                       │
         │                                                             │
@@ -879,7 +879,7 @@ def msda2d(
         ✓ Full backward pass via autograd
 
     Tensor Contracts:
-        value: (B, K, H, C)  where K = Σ(H_l×W_l) flattened across levels
+        value: (B, K, H, C)  where K = Σ(H_lxW_l) flattened across levels
         spatial_shapes: (L, 2)  with (H, W) per level
         sampling_locations: (B, Q, H, L, P, 2)  normalized coords ∈ [0,1]²
         attention_weights: (B, Q, H, L, P)  must sum to 1 over (L,P) dimension
