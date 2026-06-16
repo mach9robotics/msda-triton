@@ -3,8 +3,8 @@ Written by Abhinav Atrishi <abhinav@mach9.io>, January 2026.
 
 Triton implementation of 3D Multi-Scale Deformable Attention (MSDA3D).
 
-Copyright (C) Mach9 Robotics, Inc - All Rights Reserved
-Proprietary and confidential
+Copyright (c) 2026 Mach9 Robotics, Inc.
+Licensed under the MIT License. See the LICENSE file for details.
 """
 
 from __future__ import annotations

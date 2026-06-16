@@ -102,4 +102,4 @@ uv run ruff check .
 
 ## License
 
-Copyright (C) Mach9 Robotics, Inc - All Rights Reserved
+Released under the MIT License. Copyright (c) 2026 Mach9 Robotics, Inc. See the [LICENSE](LICENSE) file for details.
