@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# This is a public repository. CodeRabbit does NOT review pull requests
+# automatically, and only organization members may interact with the bot.
+# A maintainer triggers a review on demand by commenting on the PR:
+#     @coderabbitai review        (incremental — changes since last review)
+#     @coderabbitai full review   (re-review the whole PR from scratch)
+reviews:
+  auto_review:
+    enabled: false              # no automatic reviews; on-demand only
+chat:
+  allow_non_org_members: false  # restrict all bot interaction to org members
