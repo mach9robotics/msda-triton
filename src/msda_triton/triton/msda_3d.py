@@ -61,7 +61,7 @@ def _prepare_spatial_3d(
         if value.size(1) != total_keys:
             raise ValueError(
                 f"value dim 1 ({value.size(1)}) does not match sum of spatial shapes "
-                f"({total_keys}). Ensure K = Σ(D_l × H_l × W_l) across all levels."
+                f"({total_keys}). Ensure K = Σ(D_l x H_l x W_l) across all levels."
             )
         return (
             shapes_cpu.to(device=device, dtype=torch.int32),

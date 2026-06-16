@@ -38,6 +38,9 @@ coverage.xml
 htmlcov/
 .python-version
 
+# oh-my-claudecode local state
+.omc/
+
 # Editors and OS files
 .idea/
 .vscode/
