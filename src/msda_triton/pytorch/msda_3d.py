@@ -3,8 +3,8 @@ Written by Praveen Venkatesh <praveen@mach9.io>, June 2025.
 
 PyTorch reference implementation of 3D Multi-Scale Deformable Attention (MSDA3D).
 
-Copyright (C) Mach9 Robotics, Inc - All Rights Reserved
-Proprietary and confidential
+Copyright (c) 2026 Mach9 Robotics, Inc.
+Licensed under the MIT License. See the LICENSE file for details.
 """
 
 from __future__ import annotations
